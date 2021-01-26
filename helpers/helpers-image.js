@@ -1,39 +1,31 @@
-
 const Image = require('../class/image');
 const ListImages = require('../class/list-image');
 
-// Importar módulo para gestionar los archivos que se suben al servidor 
+// Importar módulo para gestionar los archivos
 const fs = require('fs');
 // Importar módula para construir un path completo
 const pathCompleto = require('path');
-// Importar módulo para asignar un nombre de archivo único
+// Importar módulo para asignar un nombre de archivo único (binario)
 const uuidv4 = require('uuid');
 
 
-
-
-
-
-const generateVariant  = async(pathOrigin, resolution) => {
+const generateVariant = async (pathOrigin, resolution) => {
 
     try {
 
         // Apuntar al archivo según path
         // const file = req.files.imagen;
-        // TODO: Prata por definir la carga del archivo
-        const file = TODO;
 
-        // Convertir resolución
+        //  Crear un nuevo archivo seún resolución
 
 
-        // Obteern la extensión del archivo
+        // Obtener la extensión del archivo original
         const nameParts = file.name.split('.');
         const nameOrigin = nameParts[0]; // Sabemos que el nombre del fichero no tiene '.' 
         const extension = nameParts[nameParts.length - 1];
 
 
-
-        // Generar un nombre para el archivo aleatorio y único
+        // Generar un nombre para la nueba imagen aleatoria y único
         const nameFile = `${ uuidv4() }.${ extension }`;
 
         //Construir el path completo del archivo a cargar
@@ -41,9 +33,9 @@ const generateVariant  = async(pathOrigin, resolution) => {
 
         // Method mv() for place the file somewhere on your server
         file.mv(pathNew, (err) => {
-            
+
             if (err) {
-                console.log('error:',err);
+                console.log('error:', err);
                 return res.status(500).json({
                     ok: false,
                     msg: 'Error al crear la imagen'
@@ -51,9 +43,10 @@ const generateVariant  = async(pathOrigin, resolution) => {
                 });
             }
 
-            // Crear Imagen
+            // Crear un nuevo objeto de Imagen
             const image = new Image(pathNew, resolution)
-            const listImeges= ListImages.getInstance();
+            // Añadirmo a la lista de imagenes
+            const listImeges = ListImages.getInstance();
             listImeges.insertImage(image);
 
 
@@ -68,11 +61,6 @@ const generateVariant  = async(pathOrigin, resolution) => {
 
         return true;
 
-
-
-
-
-        
 
     } catch (error) {
 

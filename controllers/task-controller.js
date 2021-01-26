@@ -1,59 +1,41 @@
-/*Colección de controladores para la gestión de hospitales 
-(funciones exportadas)*/
-
-const { response } = require('express');
+const {response} = require('express');
 
 const Task = require('../class/task');
 const ListTasks = require('../class/list-tasks');
-const { generateVariant } = require('../helpers/helpers-image');
+const {generateVariant} = require('../helpers/helpers-image');
 
 
-const createTask = async(req, res = response) => {
+const createTask = async (req, res = response) => {
 
-    
     const path = req.path;
-    const resolution  = req.resolution;
+    const resolution = req.resolution;
 
 
     try {
 
-    const task = new Task(path, resolution);
+        const task = new Task(path, resolution);
 
-    task.processImage(true);
-    const listTask= ListTasks.getInstance();
+        task.processImage(true);
+        const listTask = ListTasks.getInstance();
 
-    listTask.insertTask(task);
+        listTask.insertTask(task);
 
-    if (await generateVariant(path, this.resolution)) {
+        if (await generateVariant(path, resolution)) {
 
-    task.processImage(false);
+            task.processImage(false);
 
-    listTask.deleteTask(task.id);
-    
+            listTask.deleteTask(task.id);
 
+        } else {
 
+            res.json({
+                ok: false,
+                msg: 'Error inesperado'
 
+            });
 
+        }
 
-    }
-    else {
-
-        res.json({
-            ok: false,
-            msg: 'Error inesperado'
-
-        });
-
-    }
-
-  
-
-
-    
-
-        task.processImage();
-
-        
 
         res.json({
             ok: true,
@@ -74,21 +56,14 @@ const createTask = async(req, res = response) => {
 
 
 
-
 };
 
 
-const getState = async(req, res = response) => {
+const getState = async (req, res = response) => {
 
     const id = req.id;
 
     const state = listTasks.getState(id);
-
-
-
-
-
-
 
 
     res.json({

@@ -1,45 +1,40 @@
-
 class Task {
 
-   constructor(path, resolution) {
+    constructor(path, resolution) {
 
-       this.id = incrementId()
-       this.path = path;
-       this.resolution = resolution;
+        this.id = incrementId()
+        this.path = path;
+        this.resolution = resolution;
 
-       this.timeStanpUpdate = new Date();
-       this.timeStanp = new Date();
-       this.processing  = false;
-       // Prueba git
+        this.timeStanpUpdate = new Date();
+        this.timeStanp = new Date();
+        this.processing = false;
 
-   }
+    }
 
-   setTimeStampUpdate() {
+    setTimeStampUpdate() {
 
-    this.timeStanpUpdate = new Date();
+        this.timeStanpUpdate = new Date();
 
-   }
-
-
-   setProcessing(processing) {
-
-    this.processing = processing;
-
-   }
-
-   isProcessing() {
-       return this.processing;
-   }
-
- 
+    }
 
 
+    setProcessing(processing) {
 
-   static incrementId() {
-    if (!this.latestId) this.latestId = 1;
-    else this.latestId++;
-    return this.latestId;
-  }
+        this.processing = processing;
+
+    }
+
+    isProcessing() {
+        return this.processing;
+    }
+
+
+    static incrementId() {
+        if (!this.latestId) this.latestId = 1;
+        else this.latestId++;
+        return this.latestId;
+    }
 
 
 
@@ -54,8 +49,3 @@ class Task {
 module.exports = {
     Task
 }
-
-
-
-
-
