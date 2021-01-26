@@ -36,13 +36,7 @@ class Task {
         return this.latestId;
     }
 
-
-
-
 }
-
-
-
 
 
 

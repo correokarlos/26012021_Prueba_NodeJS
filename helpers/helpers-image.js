@@ -9,39 +9,47 @@ const pathCompleto = require('path');
 const uuidv4 = require('uuid');
 
 
+
+fs = require('fs')
+fs.readFile('folder1/image.png', function (err, data) {
+    if (err) throw err;
+    fs.writeFile('folder2/image.png', data, function (err) {
+        if (err) throw err;
+        console.log('It\'s saved!');
+    });
+});
+
+
+
+
 const generateVariant = async (pathOrigin, resolution) => {
 
     try {
 
         // Apuntar al archivo según path
-        // const file = req.files.imagen;
+        fs.readFile(pathOrigin, function (err, data) {
+            if (err) return false;
 
-        //  Crear un nuevo archivo seún resolución
+            //  Crear un nuevo archivo según resolución
+            
+
+            // Obtener la extensión del archivo original
+            const nameParts = file.name.split('.');
+            const nameOrigin = nameParts[0]; // Sabemos que el nombre del fichero no tiene '.' 
+            const extension = nameParts[nameParts.length - 1];
 
 
-        // Obtener la extensión del archivo original
-        const nameParts = file.name.split('.');
-        const nameOrigin = nameParts[0]; // Sabemos que el nombre del fichero no tiene '.' 
-        const extension = nameParts[nameParts.length - 1];
+            // Generar un nombre para la nueba imagen aleatoria y único
+            const nameFile = `${ uuidv4() }.${ extension }`;
+
+            //Construir el path completo del archivo a cargar
+            const pathNew = pathCompleto.join(__dirname, `../output/${nameOrigin}/${resolution}/${nameFile}`);
 
 
-        // Generar un nombre para la nueba imagen aleatoria y único
-        const nameFile = `${ uuidv4() }.${ extension }`;
+            fs.writeFile(pathNew, data, function (err) {
+                if (err) return false;
+            });
 
-        //Construir el path completo del archivo a cargar
-        const pathNew = pathCompleto.join(__dirname, `../output/${nameOrigin}/${resolution}/${nameFile}`);
-
-        // Method mv() for place the file somewhere on your server
-        file.mv(pathNew, (err) => {
-
-            if (err) {
-                console.log('error:', err);
-                return res.status(500).json({
-                    ok: false,
-                    msg: 'Error al crear la imagen'
-
-                });
-            }
 
             // Crear un nuevo objeto de Imagen
             const image = new Image(pathNew, resolution)
@@ -49,14 +57,6 @@ const generateVariant = async (pathOrigin, resolution) => {
             const listImeges = ListImages.getInstance();
             listImeges.insertImage(image);
 
-
-            // Devulve una respuesta al cliente satisfactoria
-            res.json({
-                ok: true,
-                msg: 'Archivo subido',
-                nombreArchivo
-
-            });
         });
 
         return true;
